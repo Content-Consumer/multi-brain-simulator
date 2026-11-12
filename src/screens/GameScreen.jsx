@@ -1,29 +1,15 @@
 import { useState } from 'react'
 import { Button, ProgressBar } from 'pixelartui-react'
-
-const QUESTIONS = [
-  'Do you often feel like two different people?',
-  'Can you hold two opposing opinions at once?',
-  'Do you make decisions with your gut?',
-  'Do you often change your mind mid-thought?',
-  'Do you enjoy being alone with your thoughts?',
-  'Do you sometimes argue with yourself?',
-  'Do you have recurring dreams with consistent characters?',
-  'Do you feel different around different people?',
-  'Do you have a voice in your head that critiques you?',
-  'Do you sometimes act against your own advice?',
-  "Do you have strong moral intuitions you can't explain?",
-  'Do you feel like your past self is a stranger?',
-  'Do you believe you contain multitudes?',
-]
+import { shuffleQuestions } from '../gameData'
 
 export default function GameScreen({ onComplete }) {
+  const [questions] = useState(() => shuffleQuestions())
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState([])
 
   function handleVote(vote) {
-    const newAnswers = [...answers, vote]
-    if (current + 1 >= QUESTIONS.length) {
+    const newAnswers = [...answers, { questionId: questions[current].id, answer: vote }]
+    if (current + 1 >= questions.length) {
       onComplete(newAnswers)
     } else {
       setAnswers(newAnswers)
@@ -31,13 +17,13 @@ export default function GameScreen({ onComplete }) {
     }
   }
 
-  const progress = Math.round((current / QUESTIONS.length) * 100)
+  const progress = Math.round((current / questions.length) * 100)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', minHeight: '100vh', background: '#ffffff', padding: '48px' }}>
       <div style={{ width: '100%', maxWidth: '700px' }}>
         <div style={{ marginBottom: '16px', fontSize: '20px', color: '#888' }}>
-          QUESTION {current + 1} / {QUESTIONS.length}
+          QUESTION {current + 1} / {questions.length}
         </div>
         <ProgressBar
           value={progress}
@@ -47,7 +33,7 @@ export default function GameScreen({ onComplete }) {
       </div>
 
       <p style={{ margin: 0, fontSize: '32px', lineHeight: 1.7, textAlign: 'center', maxWidth: '700px', fontWeight: 600 }}>
-        {QUESTIONS[current]}
+        {questions[current].text}
       </p>
 
       <div style={{ display: 'flex', gap: '32px' }}>

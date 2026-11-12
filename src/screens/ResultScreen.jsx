@@ -1,17 +1,30 @@
 import { Button } from 'pixelartui-react'
+import { ENTITY_RESPONSES } from '../gameData'
+
+function scoreAgainstEntity(answers, entityKey) {
+  const responses = ENTITY_RESPONSES[entityKey]
+  let matches = 0
+  for (const { questionId, answer } of answers) {
+    const entityVote = responses[questionId - 1] === 1 ? 'yes' : 'no'
+    if (answer === entityVote) matches++
+  }
+  return matches
+}
 
 export default function ResultScreen({ answers, onRestart }) {
-  const yesCount = answers.filter(a => a === 'yes').length
-  const noCount = answers.length - yesCount
+  const expertScore  = scoreAgainstEntity(answers, 'experts')
+  const mobScore     = scoreAgainstEntity(answers, 'mob')
+  const machineScore = scoreAgainstEntity(answers, 'machine')
 
-  // Placeholder computation — replace with real logic later
-  const result = yesCount >= 10
-    ? { title: 'THE MULTITUDE', desc: 'You contain many selves. Each one valid. Each one you.' }
-    : yesCount >= 7
-    ? { title: 'THE DIVIDED', desc: 'Two strong forces pull at your mind. The tension is your strength.' }
-    : yesCount >= 4
-    ? { title: 'THE NEGOTIATOR', desc: 'You bridge inner worlds others cannot see.' }
-    : { title: 'THE SINGULAR', desc: 'One clear voice. One steady path. Rare and resolute.' }
+  const yesCount = answers.filter(a => a.answer === 'yes').length
+  const noCount  = answers.length - yesCount
+
+  // Placeholder result — replace with real logic later
+  const topScore = Math.max(expertScore, mobScore, machineScore)
+  const result =
+    topScore === expertScore ? { title: 'THE EXPERT', desc: 'Your views align most closely with the expert panel.' }
+    : topScore === mobScore  ? { title: 'THE MOB',    desc: 'Your views align most closely with the crowd.' }
+    :                          { title: 'THE MACHINE', desc: 'Your views align most closely with the AI.' }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '40px', background: '#ffffff', padding: '48px' }}>
@@ -22,10 +35,26 @@ export default function ResultScreen({ answers, onRestart }) {
       <p style={{ margin: 0, fontSize: '26px', lineHeight: 1.8, textAlign: 'center', maxWidth: '600px', color: '#333' }}>
         {result.desc}
       </p>
-      <div style={{ display: 'flex', gap: '48px', fontSize: '22px', color: '#888' }}>
-        <span>YES: <strong style={{ color: '#0041BA' }}>{yesCount}</strong></span>
-        <span>NO: <strong style={{ color: '#0041BA' }}>{noCount}</strong></span>
+
+      <div style={{ display: 'flex', gap: '48px', fontSize: '20px', color: '#888', textAlign: 'center' }}>
+        <div>
+          <div style={{ color: '#0041BA', fontSize: '32px', fontWeight: 700 }}>{expertScore}/13</div>
+          <div>Experts</div>
+        </div>
+        <div>
+          <div style={{ color: '#0041BA', fontSize: '32px', fontWeight: 700 }}>{mobScore}/13</div>
+          <div>Mob</div>
+        </div>
+        <div>
+          <div style={{ color: '#0041BA', fontSize: '32px', fontWeight: 700 }}>{machineScore}/13</div>
+          <div>Machine</div>
+        </div>
       </div>
+
+      <div style={{ fontSize: '20px', color: '#aaa' }}>
+        You voted YES on {yesCount} / {answers.length} questions
+      </div>
+
       <div className="no-btn">
         <Button
           text="PLAY AGAIN"
