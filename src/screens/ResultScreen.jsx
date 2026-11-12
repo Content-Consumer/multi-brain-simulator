@@ -84,6 +84,7 @@ export default function ResultScreen({ answers, entityCounts, onRestart }) {
 
       {/* Per-question results */}
       <div style={{ width: '100%', maxWidth: '700px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <p style={{ margin: '0 0 8px', fontSize: '24px', textAlign: 'center', color: '#333' }}>Final Tally for Each Question</p>
         {questionResults.map(q => (
           <div key={q.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', fontSize: '16px', color: '#555', borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
             <span style={{ flex: 1, lineHeight: 1.5 }}>
