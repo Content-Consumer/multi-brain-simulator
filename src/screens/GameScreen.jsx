@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import { Button, ProgressBar } from 'pixelartui-react'
-import { shuffleQuestions, generateEntityCounts } from '../gameData'
+import { shuffleQuestions, generateEntityCounts, ENTITY_RESPONSES } from '../gameData'
+
+const ENTITIES = [
+  { key: 'experts', label: 'Experts' },
+  { key: 'mob',     label: 'Mob'     },
+  { key: 'machine', label: 'Machine' },
+]
 
 export default function GameScreen({ onComplete }) {
   const [questions] = useState(() => shuffleQuestions())
@@ -16,6 +22,12 @@ export default function GameScreen({ onComplete }) {
       setAnswers(newAnswers)
       setCurrent(current + 1)
     }
+  }
+
+  function voteAsEntity(entityKey) {
+    const questionId = questions[current].id
+    const entityVote = ENTITY_RESPONSES[entityKey][questionId - 1] === 1 ? 'yes' : 'no'
+    handleVote(entityVote)
   }
 
   const progress = Math.round((current / questions.length) * 100)
@@ -37,24 +49,41 @@ export default function GameScreen({ onComplete }) {
         {questions[current].text}
       </p>
 
-      <div style={{ display: 'flex', gap: '32px' }}>
-        <Button
-          text="YES"
-          buttonSize="large"
-          buttonType="main"
-          buttonStyle="light"
-          backgroundColor="#0041BA"
-          onClick={() => handleVote('yes')}
-        />
-        <div className="no-btn">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
+        {/* Yes / No buttons */}
+        <div style={{ display: 'flex', gap: '32px' }}>
           <Button
-            text="NO"
+            text="YES"
             buttonSize="large"
-            buttonType="outline"
+            buttonType="main"
             buttonStyle="light"
             backgroundColor="#0041BA"
-            onClick={() => handleVote('no')}
+            onClick={() => handleVote('yes')}
           />
+          <div className="no-btn">
+            <Button
+              text="NO"
+              buttonSize="large"
+              buttonType="outline"
+              buttonStyle="light"
+              backgroundColor="#0041BA"
+              onClick={() => handleVote('no')}
+            />
+          </div>
+        </div>
+
+        {/* Vote as entity */}
+        <div style={{ display: 'flex', gap: '48px' }}>
+          {ENTITIES.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => voteAsEntity(key)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '8px 16px', color: '#888' }}
+            >
+              <span style={{ fontSize: '40px', lineHeight: 1 }}>🧠</span>
+              <span style={{ fontSize: '16px' }}>{label}</span>
+            </button>
+          ))}
         </div>
       </div>
     </div>
