@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 20px;
+  color: #1a1a1a;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+h1, h2, h3, p, span, div, button {
+  font-family: 'Pixelify Sans', monospace;
+}
+
+/* ProgressBar defaults to max-content width — force full width */
+.cp-progress-bar {
+  width: 100% !important;
+}
+
+/* NO button: show blue text on white bg; swap to white on hover */
+.no-btn .cp-button-text-container-second-layer {
+  color: #0041BA !important;
+}
+.no-btn .cp-button-text-container-second-layer:hover {
+  color: #ffffff !important;
+}
