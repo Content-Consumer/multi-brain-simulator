@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { Button, ProgressBar } from 'pixelartui-react'
-import { shuffleQuestions } from '../gameData'
+import { shuffleQuestions, generateEntityCounts } from '../gameData'
 
 export default function GameScreen({ onComplete }) {
   const [questions] = useState(() => shuffleQuestions())
+  const [entityCounts] = useState(() => generateEntityCounts())
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState([])
 
   function handleVote(vote) {
     const newAnswers = [...answers, { questionId: questions[current].id, answer: vote }]
     if (current + 1 >= questions.length) {
-      onComplete(newAnswers)
+      onComplete(newAnswers, entityCounts)
     } else {
       setAnswers(newAnswers)
       setCurrent(current + 1)

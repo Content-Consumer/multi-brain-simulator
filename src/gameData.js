@@ -22,6 +22,15 @@ export const ENTITY_RESPONSES = {
   machine: [0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1],
 }
 
+// Returns random voter counts for each entity (1–19)
+export function generateEntityCounts() {
+  return {
+    experts: Math.floor(Math.random() * 19) + 1,
+    mob:     Math.floor(Math.random() * 19) + 1,
+    machine: Math.floor(Math.random() * 19) + 1,
+  }
+}
+
 // Returns a shuffled copy of the questions array (Fisher-Yates)
 export function shuffleQuestions() {
   const shuffled = [...QUESTIONS]

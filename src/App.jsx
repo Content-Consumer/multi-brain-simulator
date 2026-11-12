@@ -7,14 +7,17 @@ import ResultScreen from './screens/ResultScreen'
 export default function App() {
   const [screen, setScreen] = useState('home')
   const [answers, setAnswers] = useState([])
+  const [entityCounts, setEntityCounts] = useState(null)
 
-  function handleGameComplete(collectedAnswers) {
+  function handleGameComplete(collectedAnswers, counts) {
     setAnswers(collectedAnswers)
+    setEntityCounts(counts)
     setScreen('result')
   }
 
   function handleRestart() {
     setAnswers([])
+    setEntityCounts(null)
     setScreen('home')
   }
 
@@ -23,7 +26,7 @@ export default function App() {
       {screen === 'home' && <HomeScreen onPlay={() => setScreen('instructions')} />}
       {screen === 'instructions' && <InstructionsScreen onStart={() => setScreen('game')} />}
       {screen === 'game' && <GameScreen onComplete={handleGameComplete} />}
-      {screen === 'result' && <ResultScreen answers={answers} onRestart={handleRestart} />}
+      {screen === 'result' && <ResultScreen answers={answers} entityCounts={entityCounts} onRestart={handleRestart} />}
     </div>
   )
 }
