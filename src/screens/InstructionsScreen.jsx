@@ -2,9 +2,9 @@ import { Button } from 'pixelartui-react'
 
 const steps = [
   'You will be shown 13 questions.',
-  'For each question, vote YES or NO.',
+  'For each question, vote YES or NO using your brain or the ones available in the game',
   'All questions must be answered.',
-  'At the end, discover your brain type!',
+  'At the end, discover if your strategy won the poll',
 ]
 
 export default function InstructionsScreen({ onStart }) {
