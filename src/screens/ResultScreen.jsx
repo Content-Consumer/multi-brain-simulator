@@ -72,14 +72,17 @@ export default function ResultScreen({ answers, entityCounts, onRestart }) {
       </p>
 
       {/* Entity voter counts */}
-      <div style={{ display: 'flex', gap: '48px', fontSize: '22px', color: '#888', textAlign: 'center' }}>
-        {ENTITIES.map(({ key, label }) => (
-          <div key={key}>
-            <div style={{ color: '#0041BA', fontSize: '40px', fontWeight: 700 }}>{entityCounts[key]}</div>
-            <div>{label}</div>
-            <div style={{ fontSize: '16px', marginTop: '4px' }}>{entityCounts[key] === 1 ? 'voter' : 'voters'}</div>
-          </div>
-        ))}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+        <p style={{ margin: '0 0 8px', fontSize: '24px', textAlign: 'center', color: '#333' }}>Alignment of other members who voted in the poll</p>
+        <div style={{ display: 'flex', gap: '48px', fontSize: '22px', color: '#888', textAlign: 'center' }}>
+          {ENTITIES.map(({ key, label }) => (
+            <div key={key}>
+              <div style={{ color: '#0041BA', fontSize: '40px', fontWeight: 700 }}>{entityCounts[key]}</div>
+              <div>{label}</div>
+              <div style={{ fontSize: '16px', marginTop: '4px' }}>{entityCounts[key] === 1 ? 'voter' : 'voters'}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Per-question results */}
